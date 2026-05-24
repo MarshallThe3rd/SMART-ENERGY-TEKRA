@@ -22,8 +22,7 @@ Kode ini memuat logika utama untuk efisiensi fasilitas:
 3. Mematikan relay lampu dan memberi sinyal mematikan AC secara otomatis jika ruangan kosong.
 4. Mengirim data kondisi ruangan ke server (MQTT Broker) dalam bentuk teks JSON.
 
-## Contoh Format Data (JSON)
-Data yang dikirim dari ESP32 ke server memiliki format seperti ini:
+## Format Data (JSON):
 
 ```json
 {
