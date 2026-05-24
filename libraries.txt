@@ -1,3 +1,2 @@
-PubSubClient
+LiquidCrystal I2C
 DHT sensor library
-ArduinoJson
