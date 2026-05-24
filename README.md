@@ -26,11 +26,9 @@ Kode ini memuat logika utama untuk efisiensi fasilitas:
 
 ```json
 {
-  "ruangan_kosong": true,
-  "suhu": 24.5,
-  "co2": 800,
-  "lux": 150,
-  "daya_watt": 0,
-  "lampu_on": false,
-  "ac_on": false
+  "ruangan_aktif": true,
+  "suhu_celcius": 25.5,
+  "co2_ppm": 850,
+  "cahaya_lux": 150,
+  "daya_watt": 450
 }
