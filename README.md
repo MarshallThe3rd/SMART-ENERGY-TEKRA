@@ -1,32 +1,37 @@
 # SMART-ENERGY-TEKRA
-Purwarupa IoT Smart Energy &amp; Environment Monitoring berbasis Edge Computing untuk efisiensi fasilitas Universitas Brawijaya
+Sistem IoT Pemantauan Energi dan Lingkungan untuk Menghemat Listrik di Universitas Brawijaya.
 
-# Smart Energy & Environment Monitoring (SITL Simulation)
-Repository ini berisi *source code* simulasi *Software-in-the-Loop* (SITL) untuk sistem IoT pemantauan energi dan lingkungan kelas. 
+## Catatan Penting
+Repositori ini berisi kode simulasi menggunakan web Wokwi. Ada sedikit perbedaan komponen antara alat asli yang ditulis di proposal dengan versi simulasi ini.
 
-## Deskripsi Arsitektur Simulasi
-Desain *hardware* asli dari purwarupa ini menggunakan arsitektur *dual-processor* (STM32F411 sebagai Edge Logic dan ESP8266 sebagai Network Coprocessor) serta sensor kelas industri (Radar LD2450, SENSIRION SCD41 NDIR). 
+Pada proposal, kami menggunakan dua otak pemroses (STM32F411 dan ESP8266) serta sensor industri asli seperti Radar LD2450. Karena keterbatasan di web simulator, simulasi ini disederhanakan menggunakan satu buah ESP32 dan sensor standar (PIR, DHT22, LDR, dan Potensiometer). 
 
-Mengingat limitasi platform simulasi virtual web, kami melakukan penyesuaian (*mapping*) komponen untuk keperluan uji coba (*Proof of Concept*) logika *Edge Computing* menggunakan platform Wokwi.
- 
-## Pemetaan Sensor (Wokwi Map)
-* **Otak Pemrosesan:** Digabung menggunakan 1 buah ESP32.
-* **Radar LD2450:** Disubstitusi dengan PIR Sensor.
-* **SENSIRION SCD41:** Disubstitusi dengan DHT22 (Suhu/Lembap) + Slide Potentiometer (Simulasi fluktuasi gas CO2).
-* **TSL2591:** Disubstitusi dengan LDR (Photoresistor).
-* **PZEM-004T:** Disubstitusi dengan Slide Potentiometer (Simulasi fluktuasi beban listrik AC).
+Penyederhanaan ini hanya untuk membuktikan bahwa logika kode otomatisasi ruangan dan pengiriman data ke server berjalan dengan baik.
 
-## Alur Kerja State Machine
-Kode ini memuat logika utama efisiensi:
-1. Membaca sensor lingkungan dan gerak secara *asynchronous*.
-2. Memverifikasi toleransi waktu batas kelas kosong (15 menit pada kondisi asli, diatur 15 detik pada simulasi untuk mempercepat pembuktian).
-3. Melakukan eksekusi pemutusan daya lokal (Relay Lampu & Simulasi Sinyal AC).
-4. Mengirim *payload* metrik ke MQTT Broker dalam format JSON yang sangat ringan.
+## Pemetaan Komponen Simulasi (Wokwi)
+* Otak Sistem: ESP32
+* Sensor Gerak (Radar LD2450): Diganti dengan PIR Sensor
+* Sensor Suhu & CO2 (SCD41): Diganti dengan DHT22 (Suhu/Lembap) dan Potensiometer (Simulasi nilai CO2)
+* Sensor Cahaya (TSL2591): Diganti dengan LDR
+* Sensor Listrik Daya (PZEM-004T): Diganti dengan Potensiometer (Simulasi nilai Watt AC)
 
-## Cara Menjalankan Simulasi
-1. Buka Wokwi (wokwi.com).
-2. Buat proyek ESP32 baru.
-3. Rangkai komponen virtual sesuai pemetaan pin pada `main.ino`.
-4. *Paste* kode dari `main.ino` ke editor.
-5. Tambahkan library `PubSubClient`, `DHT sensor library`, dan `ArduinoJson` pada *Library Manager* Wokwi.
-6. Jalankan simulasi dan pantau pengiriman data JSON pada Serial Monitor.
+## Alur Kerja Sistem
+Kode ini memuat logika utama untuk efisiensi fasilitas:
+1. Membaca data sensor gerak dan lingkungan secara bersamaan.
+2. Mengecek apakah kelas benar-benar kosong. (Waktu tunggu aslinya 15 menit, tetapi di simulasi ini dipercepat menjadi 15 detik agar mudah diuji).
+3. Mematikan relay lampu dan memberi sinyal mematikan AC secara otomatis jika ruangan kosong.
+4. Mengirim data kondisi ruangan ke server (MQTT Broker) dalam bentuk teks JSON.
+
+## Contoh Format Data (JSON)
+Data yang dikirim dari ESP32 ke server memiliki format seperti ini:
+
+```json
+{
+  "ruangan_kosong": true,
+  "suhu": 24.5,
+  "co2": 800,
+  "lux": 150,
+  "daya_watt": 0,
+  "lampu_on": false,
+  "ac_on": false
+}
