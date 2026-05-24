@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "author": "Aruna",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 0, "left": 0, "attrs": {} },
+    { "type": "wokwi-pir-motion-sensor", "id": "pir", "top": -120, "left": 150, "attrs": {} },
+    { "type": "wokwi-dht22", "id": "dht", "top": -120, "left": 250, "attrs": {} },
+    { "type": "wokwi-slide-potentiometer", "id": "pot_co2", "top": -120, "left": 350, "attrs": {} },
+    { "type": "wokwi-photoresistor-sensor", "id": "ldr", "top": -120, "left": 450, "attrs": {} },
+    { "type": "wokwi-slide-potentiometer", "id": "pot_watt", "top": -120, "left": 550, "attrs": {} },
+    { "type": "wokwi-relay-module", "id": "relay_lampu", "top": 150, "left": 150, "attrs": {} },
+    { "type": "wokwi-led", "id": "led_ac", "top": 150, "left": 300, "attrs": { "color": "red" } },
+    { "type": "wokwi-relay-module", "id": "relay_exhaust", "top": 150, "left": 400, "attrs": {} }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "pir:VCC", "esp:3V3", "red", [] ],
+    [ "pir:GND", "esp:GND", "black", [] ],
+    [ "pir:OUT", "esp:27", "green", [] ],
+    [ "dht:VCC", "esp:3V3", "red", [] ],
+    [ "dht:GND", "esp:GND", "black", [] ],
+    [ "dht:SDA", "esp:4", "blue", [] ],
+    [ "pot_co2:VCC", "esp:3V3", "red", [] ],
+    [ "pot_co2:GND", "esp:GND", "black", [] ],
+    [ "pot_co2:SIG", "esp:35", "yellow", [] ],
+    [ "ldr:VCC", "esp:3V3", "red", [] ],
+    [ "ldr:GND", "esp:GND", "black", [] ],
+    [ "ldr:AO", "esp:34", "purple", [] ],
+    [ "pot_watt:VCC", "esp:3V3", "red", [] ],
+    [ "pot_watt:GND", "esp:GND", "black", [] ],
+    [ "pot_watt:SIG", "esp:32", "orange", [] ],
+    [ "relay_lampu:VCC", "esp:5V", "red", [] ],
+    [ "relay_lampu:GND", "esp:GND", "black", [] ],
+    [ "relay_lampu:IN", "esp:25", "green", [] ],
+    [ "led_ac:A", "esp:26", "red", [] ],
+    [ "led_ac:C", "esp:GND", "black", [] ],
+    [ "relay_exhaust:VCC", "esp:5V", "red", [] ],
+    [ "relay_exhaust:GND", "esp:GND", "black", [] ],
+    [ "relay_exhaust:IN", "esp:33", "blue", [] ]
+  ]
+}
